@@ -6,7 +6,6 @@ const endScreenElement = htmlElement('#end-screen');
 const initialsElement = htmlElement('#initials');
 const timeElement = htmlElement('#time');
 
-function Round () {}
 function ScoreSubmit(eventObj) {
     //eventObj.preventDefault();
     localStorage.setItem(initialsElement.value, timeElement.textContent)
