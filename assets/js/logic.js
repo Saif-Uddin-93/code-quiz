@@ -24,15 +24,12 @@ function NextQuestion(eventObj){
     if(eventObj.target.id==="start") {
         console.log('test')
         timer_bool = true;
-        //StartTimer(/* timer_bool */);
-        //console.log(timer_bool);
         eventObj.target.parentNode.classList.toggle('hide');
         questionsElement.classList.toggle('hide');
     }
     if(questionsElement.dataset.nextQuestion==maxQuestions+1) {
         console.log('test2')
         timer_bool=false;
-        //StartTimer(/* timer_bool */);
         clearInterval(StartTimer);
         endScreenElement.classList.toggle("hide")
         questionsElement.classList.toggle("hide")
@@ -45,29 +42,44 @@ function NextQuestion(eventObj){
 }
 
 function CheckAnswer(eventObj) {
+    const feedbackEl = htmlElement('#feedback');
     if (eventObj.target.dataset.correct=='false'){
         console.log(eventObj.target.dataset.correct);
-        timeElement.textContent=parseInt(timeElement.textContent)-15;
-    }/* 
+        timeElement.textContent=parseInt(timeElement.textContent)-20;
+        feedbackEl.textContent = 'Wrong!'
+        feedbackEl.classList.remove('hide');
+    }
     else {
         console.log(eventObj.target.dataset.correct);
-        timeElement.textContent=parseInt(timeElement.textContent)-15;
-    } */
+        feedbackEl.textContent = 'Correct!'
+        feedbackEl.classList.remove('hide');
+        //timeElement.textContent=parseInt(timeElement.textContent)-15;
+    }
     NextQuestion(eventObj);
 }
 
-function StartTimer(){
+function StartTimer() {
     if(timer_bool){
         timeElement.textContent = parseInt(timeElement.textContent)-1;
+        if(parseInt(timeElement.textContent)<1){
+            OutOfTime();
         }
-}
-setInterval(StartTimer, 1000);
-
-/* function OutOfTime(){
-    if(parseInt(timeElement.textContent)===0){
-
     }
-} */
+}
+
+function OutOfTime(){
+    timer_bool = false;
+    clearInterval(StartTimer);
+    timeElement.textContent = 0;
+}
+
+function FeedbackToggle(){
+    
+}
+
+setInterval(StartTimer, 1000);
+setInterval(FeedbackToggle, 1000);
+
 
 AddGlobalEventListener('click', NextQuestion, '#start');
 AddGlobalEventListener('click', CheckAnswer, '.choice');
