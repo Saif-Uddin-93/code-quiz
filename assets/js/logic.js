@@ -7,7 +7,6 @@ const initialsElement = htmlElement('#initials');
 const timeElement = htmlElement('#time');
 
 function ScoreSubmit(eventObj) {
-    //eventObj.preventDefault();
     localStorage.setItem(initialsElement.value, timeElement.textContent)
     location.href = "highscores.html";
 }
