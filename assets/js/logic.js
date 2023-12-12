@@ -3,12 +3,6 @@ const timeElement = htmlElement('#time');
 const questionsElement = htmlElement('#questions');
 let timer_bool=false;
 
-function ScoreSubmit(eventObj) {
-    const initialsElement = htmlElement('#initials');
-    localStorage.setItem(initialsElement.value, timeElement.textContent)
-    location.href = "highscores.html";
-}
-
 function BuildQuestion(questionNo){
     const questionTitleElement = htmlElement('#question-title');
     const choicesElement = htmlElement('#choices');
@@ -41,21 +35,31 @@ function NextQuestion(eventObj){
     questionsElement.setAttribute("data-next-question", currentQ+1);
 }
 
+const feedbackEl = htmlElement('#feedback');
 function CheckAnswer(eventObj) {
-    const feedbackEl = htmlElement('#feedback');
     if (eventObj.target.dataset.correct=='false'){
         console.log(eventObj.target.dataset.correct);
         timeElement.textContent=parseInt(timeElement.textContent)-20;
         feedbackEl.textContent = 'Wrong!'
         feedbackEl.classList.remove('hide');
+        //feedbackToggle();
+        setTimeout( ToggleHide, 1000);
     }
     else {
         console.log(eventObj.target.dataset.correct);
         feedbackEl.textContent = 'Correct!'
         feedbackEl.classList.remove('hide');
+        setTimeout(ToggleHide, 1000);
+        //feedbackToggle();
         //timeElement.textContent=parseInt(timeElement.textContent)-15;
     }
     NextQuestion(eventObj);
+}
+
+function ScoreSubmit(eventObj) {
+    const initialsElement = htmlElement('#initials');
+    localStorage.setItem(initialsElement.value, timeElement.textContent)
+    location.href = "highscores.html";
 }
 
 function StartTimer() {
@@ -73,12 +77,11 @@ function OutOfTime(){
     timeElement.textContent = 0;
 }
 
-function FeedbackToggle(){
-    
+function ToggleHide() {
+    feedbackEl.classList.add('hide');
 }
 
 setInterval(StartTimer, 1000);
-setInterval(FeedbackToggle, 1000);
 
 
 AddGlobalEventListener('click', NextQuestion, '#start');
