@@ -1,88 +1,58 @@
-# Module 6 Challenge Web APIs: Code Quiz
+# Code-Quiz
 
-## Your Task
+## Description
 
-As you proceed in your journey to becoming a front-end web developer, it’s likely that you’ll be asked to complete a coding assessment, perhaps as part of an interview process. A typical coding assessment is a combination of multiple-choice questions and interactive coding challenges. 
-
-To help you become familiar with these tests and give you a chance to apply the skills from this module, this week’s challenge invites you to build a timed coding quiz with multiple-choice questions. This app will run in the browser, and will feature dynamically updated HTML and CSS powered by JavaScript code that you write. It will have a clean, polished, and responsive user interface. This week’s coursework has taught you all the skills you need to succeed in this challenge.
-
-
-## User Story
-
-```
-AS A coding boot camp student
-I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
-SO THAT I can gauge my progress compared to my peers
-```
-
-## Acceptance Criteria
-
-Create a code quiz that contains the following requirements:
+This project was created to create a quiz game about JavaScript. The aims of this are to practice my current knowledge in JavaScript and to create a quiz that meets the following criteria:
 
 * A start button that when clicked a timer starts and the first question appears.
- 
-  * Questions contain buttons for each answer.
-  * 
-  * When answer is clicked, the next question appears
-  * 
-  * If the answer clicked was incorrect then subtract time from the clock
-
+* Questions contain buttons for each answer.
+* When answer is clicked, the next question appears
+* If the answer clicked was incorrect then subtract time from the clock
 * The quiz should end when all questions are answered or the timer reaches 0.
+* When the game ends, it should display their score and give the user the ability to save their initials and their score
 
-  * When the game ends, it should display their score and give the user the ability to save their initials and their score
-  
-## Mock-Up
+The main things I've learned from this project are:
 
-The following animation demonstrates the application functionality:
+* The use of setInterval and setTimeout functions.
+* Better utilise the map function for arrays.
+* A better understanding of Objects and how to access data within them.
 
-![Animation of code quiz. Presses button to start quiz. Clicks the button for the answer to each question, displays if answer was correct or incorrect. Quiz finishes and displays high scores. User adds their intials, then clears their intials and starts over.](./assets/08-web-apis-challenge-demo.gif)
+[Link to deployed web page.](https://saif-uddin-93.github.io/code-quiz/)
 
-## Grading Requirements
+## Table of Contents
 
-This challenge is graded based on the following criteria: 
+- [Installation](#installation)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
 
-### Technical Acceptance Criteria: 40%
+## Installation
 
-* Satisfies all of the above acceptance criteria.
+For this project, the developer tool I'll be using is VS Code. A lightweight IDE that allows working in JavaScript. It also allows the use of Extensions which can add extra functionality to the tool to help with debugging and making code more readable. The main extension I'll be using is called, Live Server, by Ritwick Dey. The browser that the web page will be used on is Google Chrome and will work on all Chromium-based web browsers.
 
-### Deployment: 32%
+## Usage
 
-* Application deployed at live URL.
+The game can be displayed which each stage of the game show in the GIF below:
 
-* Application loads with no errors.
+![GIF of coding quiz](./assets/images/code-quiz.gif)
 
-* Application GitHub URL submitted.
+Scores are saved on the browsers local storage so the player would need to delete them manually using the developer tool or by clearing cache.
 
-* GitHub repository that contains application code.
+## Credits
 
-### Application Quality: 15%
+Assets in this projects belong to the edX organisers. All JavaScript in this project was written by myself.
 
-* Application user experience is intuitive and easy to navigate.
+## License
+### MIT License
 
-* Application user interface style is clean and polished.
+Copyright (c) 2023 Saif-Uddin-93
 
-* Application resembles the mock-up functionality provided in the challenge instructions.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-### Repository Quality: 13%
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-* Repository has a unique name.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-* Repository follows best practices for file structure and naming conventions.
+## Badges
 
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains quality README file with description, screenshot, and link to deployed application.
-
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
-
----
-© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+![badmath](https://img.shields.io/github/languages/top/lernantino/badmath)

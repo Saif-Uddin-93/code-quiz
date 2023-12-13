@@ -1,6 +1,9 @@
 const htmlElement = (selector) => document.querySelector(selector);
 const timeElement = htmlElement('#time');
 const questionsElement = htmlElement('#questions');
+const feedbackEl = htmlElement('#feedback');
+const endScreenElement = htmlElement('#end-screen');
+//const correctSound = ;
 let timer_bool=false;
 
 function BuildQuestion(questionNo){
@@ -13,16 +16,13 @@ function BuildQuestion(questionNo){
 }
 
 function NextQuestion(eventObj){
-    const endScreenElement = htmlElement('#end-screen');
     const maxQuestions = Object.entries(questions).length;
     if(eventObj.target.id==="start") {
-        console.log('test')
         timer_bool = true;
         eventObj.target.parentNode.classList.toggle('hide');
         questionsElement.classList.toggle('hide');
     }
     if(questionsElement.dataset.nextQuestion==maxQuestions+1) {
-        console.log('test2')
         timer_bool=false;
         clearInterval(StartTimer);
         endScreenElement.classList.toggle("hide")
@@ -35,7 +35,6 @@ function NextQuestion(eventObj){
     questionsElement.setAttribute("data-next-question", currentQ+1);
 }
 
-const feedbackEl = htmlElement('#feedback');
 function CheckAnswer(eventObj) {
     if (eventObj.target.dataset.correct=='false'){
         console.log(eventObj.target.dataset.correct);
@@ -51,7 +50,7 @@ function CheckAnswer(eventObj) {
         feedbackEl.classList.remove('hide');
         setTimeout(ToggleHide, 1000);
         //feedbackToggle();
-        //timeElement.textContent=parseInt(timeElement.textContent)-15;
+        //timeElement.textContent=parseInt(timeElement.textContent)+5;
     }
     NextQuestion(eventObj);
 }
@@ -75,6 +74,8 @@ function OutOfTime(){
     timer_bool = false;
     clearInterval(StartTimer);
     timeElement.textContent = 0;
+    endScreenElement.classList.toggle("hide")
+    questionsElement.classList.toggle("hide")
 }
 
 function ToggleHide() {
@@ -82,7 +83,6 @@ function ToggleHide() {
 }
 
 setInterval(StartTimer, 1000);
-
 
 AddGlobalEventListener('click', NextQuestion, '#start');
 AddGlobalEventListener('click', CheckAnswer, '.choice');
