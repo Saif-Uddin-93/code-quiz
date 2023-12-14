@@ -3,33 +3,22 @@ const timeElement = htmlElement('#time');
 const questionsElement = htmlElement('#questions');
 const feedbackEl = htmlElement('#feedback');
 const endScreenElement = htmlElement('#end-screen');
-//const correctSound = ;
-//let timer_bool=false;
-//const startTime = 100;
-//timeElement.textContent = startTime;
-const maxQuestions = Object.entries(questions).length;
-const deductTime = (time) => timeElement.textContent=parseInt(timeElement.textContent)-time;
-const currentTime = () => parseInt(timeElement.textContent);
-let timeInterval;
-const Timer = () => ({
+
+const Timer = {
+    timeInterval: undefined,
     setActive : (bool = timeElement.dataset.active)=>timeElement.dataset.active = bool.toString(), 
     active : ()=> String(timeElement.dataset.active),
-    setTime : (time = currentTime())=>timeElement.textContent = time,
-    start : ()=>{ timeInterval = setInterval(countdown, 1000); Timer().setActive(true)},
-    stop : ()=>{clearInterval(timeInterval); Timer().setActive(false)},
-})
-
-function countdown() {
-    deductTime(1);
-    if(currentTime()<1){
-        console.log(`countdown() called`);
-        outOfTime();
-    }
+    setTime : (time = Timer.getTime())=>timeElement.textContent = time,
+    getTime : ()=> parseInt(timeElement.textContent),
+    start : ()=> {Timer.timeInterval = setInterval(Timer.countdown, 1000); Timer.setActive(true)},
+    stop : ()=> {clearInterval(Timer.timeInterval); Timer.setActive(false)},
+    deductTime : (time) => timeElement.textContent=Timer.getTime()-time,
+    countdown: ()=> {Timer.deductTime(1); if(Timer.getTime()<1) Timer.outOfTime();},
+    outOfTime: ()=> {Timer.setTime(0); endScreen();},
 }
 
-Timer().setTime(100);
+Timer.setTime(100);
 
-//function startTimer(){setInterval(countdown, 1000);}
 function buildQuestion(questionNo){
     const questionTitleElement = htmlElement('#question-title');
     const choicesElement = htmlElement('#choices');
@@ -41,11 +30,8 @@ function buildQuestion(questionNo){
 
 function nextQuestion(eventObj){
     if(eventObj.target.id==="start") {
-        //timer_bool = true;
-        //Timer(true)//.setActive;
-        //startTimer();
-        Timer().start();
-        console.log(`timer bool: ${Timer().active()}`);
+        Timer.start();
+        console.log(`timer bool: ${Timer.active()}`);
         eventObj.target.parentNode.classList.toggle('hide');
         questionsElement.classList.toggle('hide');
     }
@@ -63,25 +49,25 @@ function nextQuestion(eventObj){
 function checkAnswer(eventObj) {
     if (eventObj.target.dataset.correct=='false'){
         console.log(eventObj.target.dataset.correct);
-        //timeElement.textContent=parseInt(timeElement.textContent)-20;
-        deductTime(20);
+        wrongAnswers++;
         feedbackEl.textContent = 'Wrong!'
         feedbackEl.classList.remove('hide');
-        //feedbackToggle();
         setTimeout(toggleHide, 1000);
-        if(currentTime()<1){
-            console.log(`current time is: ${currentTime()}`)
-            console.log(`checkAnswer() called`);
-            outOfTime();
+        if(Timer.getTime()<1){
+            console.log(`current time is: ${getTime()}`)
+            //console.log(`checkAnswer() called`);
+            Timer.outOfTime();
         }
+        if(wrongAnswers===maxQuestions){
+            Timer.outOfTime();
+        }
+        Timer.deductTime(20);
     }
     else {
         console.log(eventObj.target.dataset.correct);
         feedbackEl.textContent = 'Correct!'
         feedbackEl.classList.remove('hide');
         setTimeout(toggleHide, 1000);
-        //feedbackToggle();
-        //timeElement.textContent=parseInt(timeElement.textContent)+  5;
     }
     nextQuestion(eventObj);
 }
@@ -92,17 +78,11 @@ function scoreSubmit(eventObj) {
     location.href = "highscores.html";
 }
 
-function outOfTime(){
-    endScreen();
-    timeElement.textContent = 0;
-    console.log(`Out of time!`);
-}
-
 function endScreen() {
-    Timer().stop();
-    //clearInterval(startTimer);
+    Timer.stop();
     endScreenElement.classList.remove("hide");
     questionsElement.classList.add("hide");
+    htmlElement("#final-score").textContent = Timer.getTime();
 }
 
 function toggleHide() {
