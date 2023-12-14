@@ -7,28 +7,28 @@ const endScreenElement = htmlElement('#end-screen');
 //let timer_bool=false;
 //const startTime = 100;
 //timeElement.textContent = startTime;
+const maxQuestions = Object.entries(questions).length;
 const deductTime = (time) => timeElement.textContent=parseInt(timeElement.textContent)-time;
 const currentTime = () => parseInt(timeElement.textContent);
-const maxQuestions = Object.entries(questions).length;
 
-const Timer = (bool = timeElement.dataset.active, time = currentTime()) => ({active: String(timeElement.dataset.active), setActive : timeElement.dataset.active = bool.toString(), setTime : timeElement.textContent = time/* || currentTime() */})
+const Timer = () => ({
+    setActive : (bool = timeElement.dataset.active)=>timeElement.dataset.active = bool.toString(), 
+    setTime : (time = currentTime())=>timeElement.textContent = time,
+    start : ()=>{setInterval(countdown, 1000); Timer().setActive(true)},
+    stop : ()=>{clearInterval(countdown); Timer().setActive(false)},
+    active : String(timeElement.dataset.active)
+})
 
-Timer(false, 100);//.setActive;
-
-function startTimer() {
-    console.log(Timer().active)
-    if(Timer().active==="true"){
-        //timeElement.textContent = parseInt(timeElement.textContent)-1;
-        deductTime(1);
-        if(currentTime()<1){
-            outOfTime();
-        }
-    } else {
-        setInterval(startTimer, 1000);
-        Timer(true, 100);
+function countdown() {
+    deductTime(1);
+    if(currentTime()<1){
+        outOfTime();
     }
 }
 
+Timer().setTime(100);
+
+//function startTimer(){setInterval(countdown, 1000);}
 function buildQuestion(questionNo){
     const questionTitleElement = htmlElement('#question-title');
     const choicesElement = htmlElement('#choices');
@@ -42,7 +42,8 @@ function nextQuestion(eventObj){
     if(eventObj.target.id==="start") {
         //timer_bool = true;
         //Timer(true)//.setActive;
-        startTimer();
+        //startTimer();
+        Timer().start();
         console.log(`timer bool: ${Timer().active}`);
         eventObj.target.parentNode.classList.toggle('hide');
         questionsElement.classList.toggle('hide');
@@ -96,8 +97,9 @@ function outOfTime(){
 }
 
 function endScreen() {
-    Timer(false);
-    clearInterval(startTimer);
+    Timer().stop();
+    //clearInterval(startTimer);
+    //Timer().stop
     endScreenElement.classList.remove("hide");
     questionsElement.classList.add("hide");
 }
