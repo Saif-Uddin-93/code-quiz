@@ -14,7 +14,7 @@ for (let i = 0; i<names.length; i++) scoreList += `<li>${names[i]} - ${scores[i]
 
 highscoreElement.innerHTML = scoreList; 
 
-function ClearScore(){
+function clearScore(){
     localStorage.clear();
     highscoreElement.innerHTML='';
 }

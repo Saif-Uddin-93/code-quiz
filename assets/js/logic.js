@@ -5,8 +5,9 @@ const feedbackEl = htmlElement('#feedback');
 const endScreenElement = htmlElement('#end-screen');
 //const correctSound = ;
 let timer_bool=false;
+let deductTime = (time) => timeElement.textContent=parseInt(timeElement.textContent)-time;
 
-function BuildQuestion(questionNo){
+function buildQuestion(questionNo){
     const questionTitleElement = htmlElement('#question-title');
     const choicesElement = htmlElement('#choices');
     questionTitleElement.textContent = questionNo.q;
@@ -15,7 +16,7 @@ function BuildQuestion(questionNo){
     choicesElement.innerHTML=choices;
 }
 
-function NextQuestion(eventObj){
+function nextQuestion(eventObj){
     const maxQuestions = Object.entries(questions).length;
     if(eventObj.target.id==="start") {
         timer_bool = true;
@@ -24,71 +25,74 @@ function NextQuestion(eventObj){
     }
     if(questionsElement.dataset.nextQuestion==maxQuestions+1) {
         timer_bool=false;
-        clearInterval(StartTimer);
+        clearInterval(startTimer);
         endScreenElement.classList.toggle("hide")
         questionsElement.classList.toggle("hide")
         return;
     }
     
     const currentQ = parseInt(questionsElement.dataset.nextQuestion) < maxQuestions ? parseInt(questionsElement.dataset.nextQuestion) : maxQuestions;
-    BuildQuestion(questions[currentQ]);
+    buildQuestion(questions[currentQ]);
     questionsElement.setAttribute("data-next-question", currentQ+1);
 }
 
-function CheckAnswer(eventObj) {
+function checkAnswer(eventObj) {
     if (eventObj.target.dataset.correct=='false'){
         console.log(eventObj.target.dataset.correct);
         timeElement.textContent=parseInt(timeElement.textContent)-20;
         feedbackEl.textContent = 'Wrong!'
         feedbackEl.classList.remove('hide');
         //feedbackToggle();
-        setTimeout( ToggleHide, 1000);
+        setTimeout(toggleHide, 1000);
+        /* if(){
+
+        } */
     }
     else {
         console.log(eventObj.target.dataset.correct);
         feedbackEl.textContent = 'Correct!'
         feedbackEl.classList.remove('hide');
-        setTimeout(ToggleHide, 1000);
+        setTimeout(toggleHide, 1000);
         //feedbackToggle();
-        //timeElement.textContent=parseInt(timeElement.textContent)+5;
+        //timeElement.textContent=parseInt(timeElement.textContent)+  5;
     }
-    NextQuestion(eventObj);
+    nextQuestion(eventObj);
 }
 
-function ScoreSubmit(eventObj) {
+function scoreSubmit(eventObj) {
     const initialsElement = htmlElement('#initials');
     localStorage.setItem(initialsElement.value, timeElement.textContent)
     location.href = "highscores.html";
 }
 
-function StartTimer() {
+function startTimer() {
     if(timer_bool){
         timeElement.textContent = parseInt(timeElement.textContent)-1;
         if(parseInt(timeElement.textContent)<1){
-            OutOfTime();
+            outOfTime();
         }
     }
 }
 
-function OutOfTime(){
+function outOfTime(){
     timer_bool = false;
-    clearInterval(StartTimer);
+    clearInterval(startTimer);
     timeElement.textContent = 0;
     endScreenElement.classList.toggle("hide")
     questionsElement.classList.toggle("hide")
 }
 
-function ToggleHide() {
+function toggleHide() {
     feedbackEl.classList.add('hide');
 }
 
-setInterval(StartTimer, 1000);
+setInterval(startTimer, 1000);
 
-AddGlobalEventListener('click', NextQuestion, '#start');
-AddGlobalEventListener('click', CheckAnswer, '.choice');
-AddGlobalEventListener('click', ScoreSubmit, '#submit');
+addGlobalEventListener('click', NextQuestion, '#start');
+addGlobalEventListener('click', CheckAnswer, '.choice');
+addGlobalEventListener('click', ScoreSubmit, '#submit');
 
-function AddGlobalEventListener(typeOfEvent, callback, selector, stopPropagation=false) {
+function addGlobalEventListener(typeOfEvent, callback, selector, stopPropagation=false) {
     document.addEventListener(typeOfEvent, (eventObj) => {
       if (eventObj.target.matches(selector)) callback(eventObj);
       if (stopPropagation) eventObj.stopPropagation();
