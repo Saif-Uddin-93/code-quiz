@@ -12,8 +12,9 @@ correct.setAttribute("src","assets/sfx/correct.wav");
 const incorrect = document.createElement("audio")
 incorrect.setAttribute("src","assets/sfx/incorrect.wav");
 const sounds = [correct, incorrect];
-function correctPlay  () {sounds.forEach(sound => sound.pause()); correct.play();}
-function incorrectPlay () {sounds.forEach(sound => sound.pause()); incorrect.play();}
+const stopSounds = (s = sounds) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;});
+function correctPlay  () {stopSounds(); correct.play();}
+function incorrectPlay () {stopSounds(); incorrect.play();}
 
 // Timer object 
 const Timer = {
