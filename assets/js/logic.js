@@ -7,18 +7,26 @@ const penaltyElement = htmlElement('#penalty');
 const penalty = 20//parseInt(penaltyElement.dataset.penalty);
 penaltyElement.textContent = penalty;
 
+const correct = document.createElement("audio");
+correct.setAttribute("src","assets/sfx/correct.wav");
+const incorrect = document.createElement("audio");
+incorrect.setAttribute("src","assets/sfx/incorrect.wav");
+function correctPlay  () {correct.pause(); correct.play();}
+function incorrectPlay () {incorrect.pause(); incorrect.play();}
+
+// Timer object 
 const Timer = {
     timerInterval: undefined,
     timeoutInterval: undefined,
-    timeoutSet: ()=> Timer.timeoutInterval = setTimeout(toggleHide, 1000),
+    timeoutSet: (callBack)=> Timer.timeoutInterval = setTimeout(callBack, 1000),
     timeoutClr: ()=> clearTimeout(Timer.timeoutInterval),
-    setActive : (bool = timeElement.dataset.active)=>timeElement.dataset.active = bool.toString(), 
+    setActive : (bool = timeElement.dataset.active)=> timeElement.dataset.active = bool.toString(), 
     active : ()=> String(timeElement.dataset.active),
-    setTime : (time = Timer.getTime())=>timeElement.textContent = time,
+    setTime : (time = Timer.getTime())=> timeElement.textContent = time,
     getTime : ()=> parseInt(timeElement.textContent),
     start : ()=> {Timer.timerInterval = setInterval(Timer.countdown, 1000); Timer.setActive(true)},
     stop : ()=> {clearInterval(Timer.timerInterval); Timer.setActive(false)},
-    deductTime : (time) => timeElement.textContent=Timer.getTime()-time,
+    deductTime : (time)=> timeElement.textContent=Timer.getTime()-time,
     countdown: ()=> {Timer.deductTime(1); if(Timer.getTime()<1) Timer.outOfTime();},
     outOfTime: ()=> {Timer.setTime(0); endScreen();},
 }
@@ -51,17 +59,16 @@ function nextQuestion(eventObj){
     questionsElement.setAttribute("data-next-question", currentQ+1);
 }
 
-
 function checkAnswer(eventObj) {
     if (eventObj.target.dataset.correct=='false'){
         console.log(eventObj.target.dataset.correct);
         wrongAnswers++;
         feedbackEl.textContent = 'Wrong!'
         feedbackEl.classList.remove('hide');
-        //setTimeout(toggleHide, 1000);
         Timer.timeoutClr();
-        Timer.timeoutSet();
+        Timer.timeoutSet(toggleFeedback);
         Timer.deductTime(penalty);
+        incorrectPlay();
         if(Timer.getTime()<1 || wrongAnswers===maxQuestions){
             console.log(`current time is: ${Timer.getTime()}`)
             //console.log(`checkAnswer() called`);
@@ -72,9 +79,9 @@ function checkAnswer(eventObj) {
         console.log(eventObj.target.dataset.correct);
         feedbackEl.textContent = 'Correct!'
         feedbackEl.classList.remove('hide');
-        //setTimeout(toggleHide, 1000);
         Timer.timeoutClr();
-        Timer.timeoutSet();
+        Timer.timeoutSet(toggleFeedback);
+        correctPlay();
     }
     nextQuestion(eventObj);
 }
@@ -92,7 +99,7 @@ function endScreen() {
     htmlElement("#final-score").textContent = Timer.getTime();
 }
 
-function toggleHide() {
+function toggleFeedback() {
     feedbackEl.classList.add('hide');
 }
 
