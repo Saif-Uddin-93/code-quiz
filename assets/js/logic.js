@@ -9,10 +9,11 @@ penaltyElement.textContent = penalty;
 
 const correct = document.createElement("audio");
 correct.setAttribute("src","assets/sfx/correct.wav");
-const incorrect = document.createElement("audio");
+const incorrect = document.createElement("audio")
 incorrect.setAttribute("src","assets/sfx/incorrect.wav");
-function correctPlay  () {correct.pause(); correct.play();}
-function incorrectPlay () {incorrect.pause(); incorrect.play();}
+const sounds = [correct, incorrect];
+function correctPlay  () {sounds.forEach(sound => sound.pause()); correct.play();}
+function incorrectPlay () {sounds.forEach(sound => sound.pause()); incorrect.play();}
 
 // Timer object 
 const Timer = {
