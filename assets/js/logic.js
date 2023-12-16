@@ -7,7 +7,7 @@ const penaltyElement = htmlElement('#penalty');
 const penalty = 20//parseInt(penaltyElement.dataset.penalty);
 penaltyElement.textContent = penalty;
 
-const soundVar = (src, audio=document.createElement("audio"), set=audio.setAttribute("src", src)) => audio
+const soundVar = (src="", audio=document.createElement("audio"), set=audio.setAttribute("src", src)) => audio
 const soundsLibrary = {
     sounds: {
         correct : soundVar("assets/sfx/correct.wav"),
@@ -15,8 +15,8 @@ const soundsLibrary = {
     stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
     play : (stop = soundsLibrary.stop())=> ({
         correct : ()=> soundsLibrary.sounds.correct.play(),
-        incorrect : ()=> soundsLibrary.sounds.incorrect.play(),
-    }),
+        incorrect : ()=> soundsLibrary.sounds.incorrect.play(),}),
+    newSound: (key="", src="") => soundsLibrary.sounds[key]=soundVar(src),
 }
 
 // Timer object 
