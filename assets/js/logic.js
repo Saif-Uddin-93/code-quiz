@@ -8,19 +8,17 @@ const penalty = 20//parseInt(penaltyElement.dataset.penalty);
 penaltyElement.textContent = penalty;
 
 const soundVar = (src, audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
-//const correct = (src="assets/sfx/correct.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
-//const incorrect = (src="assets/sfx/incorrect.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
 const soundsLibrary = {
     sounds: {
         correct : soundVar("assets/sfx/correct.wav"),
-        incorrect : /* incorrect()}, */soundVar("assets/sfx/incorrect.wav")}, 
-    stopSounds : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
+        incorrect : soundVar("assets/sfx/incorrect.wav")}, 
+    stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
     play : {
         correct : () => {
-            soundsLibrary.stopSounds(); 
+            soundsLibrary.stop(); 
             soundsLibrary.sounds.correct.play();},
         incorrect : () => {
-            soundsLibrary.stopSounds(); 
+            soundsLibrary.stop(); 
             soundsLibrary.sounds.incorrect.play();},
     },
 }
