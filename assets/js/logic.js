@@ -12,7 +12,7 @@ const soundsLibrary = {
     sounds: {
         correct : soundVar("assets/sfx/correct.wav"),
         incorrect : soundVar("assets/sfx/incorrect.wav")}, 
-    stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {console.log("Stop sound"); sound.pause(); sound.currentTime = 0;}),
+    stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
     play : (stop = soundsLibrary.stop())=> ({
         correct : () => {
             soundsLibrary.sounds.correct.play();},
