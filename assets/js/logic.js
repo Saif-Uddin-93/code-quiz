@@ -7,20 +7,18 @@ const penaltyElement = htmlElement('#penalty');
 const penalty = 20//parseInt(penaltyElement.dataset.penalty);
 penaltyElement.textContent = penalty;
 
-const soundVar = (src, audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
+const soundVar = (src, audio=document.createElement("audio"), set=audio.setAttribute("src", src)) => audio
 const soundsLibrary = {
     sounds: {
         correct : soundVar("assets/sfx/correct.wav"),
         incorrect : soundVar("assets/sfx/incorrect.wav")}, 
-    stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
-    play : {
+    stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {console.log("Stop sound"); sound.pause(); sound.currentTime = 0;}),
+    play : (stop = soundsLibrary.stop())=> ({
         correct : () => {
-            soundsLibrary.stop(); 
             soundsLibrary.sounds.correct.play();},
         incorrect : () => {
-            soundsLibrary.stop(); 
             soundsLibrary.sounds.incorrect.play();},
-    },
+    }),
 }
 
 // Timer object 
@@ -78,7 +76,7 @@ function checkAnswer(eventObj) {
         Timer.timeoutSet(toggleFeedback);
         Timer.deductTime(penalty);
         //incorrectPlay();
-        soundsLibrary.play.incorrect();
+        soundsLibrary.play().incorrect();
         if(Timer.getTime()<1 || wrongAnswers===maxQuestions){
             console.log(`current time is: ${Timer.getTime()}`)
             //console.log(`checkAnswer() called`);
@@ -92,7 +90,7 @@ function checkAnswer(eventObj) {
         Timer.timeoutClr();
         Timer.timeoutSet(toggleFeedback);
         //correctPlay();
-        soundsLibrary.play.correct();
+        soundsLibrary.play().correct();
     }
     nextQuestion(eventObj);
 }
