@@ -13,15 +13,15 @@ const soundVar = (src, audio=document.createElement("audio"), s=audio.setAttribu
 const soundsLibrary = {
     sounds: {
         correct : soundVar("assets/sfx/correct.wav"),
-        incorrect : soundVar("assets/sfx/incorrect.wav")}, 
-    stopSounds : (s = Object.keys(soundsLibrary.sounds)) => s.forEach(sound => {sound().pause(); sound.currentTime = 0;}),
+        incorrect : /* incorrect()}, */soundVar("assets/sfx/incorrect.wav")}, 
+    stopSounds : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
     play : {
-        correct : (s = Object.keys(soundsLibrary.sounds)) => {
-            soundsLibrary.stopSounds(s); 
-            soundsLibrary.sounds.correct().play();},
-        incorrect : (s = Object.keys(soundsLibrary.sounds)) => {
-            soundsLibrary.stopSounds(s); 
-            soundsLibrary.sounds.incorrect().play();},
+        correct : () => {
+            soundsLibrary.stopSounds(); 
+            soundsLibrary.sounds.correct.play();},
+        incorrect : () => {
+            soundsLibrary.stopSounds(); 
+            soundsLibrary.sounds.incorrect.play();},
     },
 }
 
