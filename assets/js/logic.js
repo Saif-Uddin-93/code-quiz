@@ -7,17 +7,22 @@ const penaltyElement = htmlElement('#penalty');
 const penalty = 20//parseInt(penaltyElement.dataset.penalty);
 penaltyElement.textContent = penalty;
 
-const correct = (src="assets/sfx/correct.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
-const incorrect = (src="assets/sfx/incorrect.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
+const soundVar = (src, audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
+//const correct = (src="assets/sfx/correct.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
+//const incorrect = (src="assets/sfx/incorrect.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
 const soundsLibrary = {
-    sounds: {correct, incorrect}, 
+    sounds: {
+        correct : soundVar("assets/sfx/correct.wav"),
+        incorrect : soundVar("assets/sfx/incorrect.wav")}, 
     stopSounds : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound().pause(); sound.currentTime = 0;}),
-    correctPlay : (s = Object.values(soundsLibrary.sounds)) => {
+    play : {
+    correct : (s = Object.values(soundsLibrary.sounds)) => {
         soundsLibrary.stopSounds(s); 
         soundsLibrary.sounds.correct().play();},
-    incorrectPlay : (s = Object.values(soundsLibrary.sounds)) => {
+    incorrect : (s = Object.values(soundsLibrary.sounds)) => {
         soundsLibrary.stopSounds(s); 
         soundsLibrary.sounds.incorrect().play();},
+    }
 }
 
 // Timer object 
@@ -75,7 +80,7 @@ function checkAnswer(eventObj) {
         Timer.timeoutSet(toggleFeedback);
         Timer.deductTime(penalty);
         //incorrectPlay();
-        soundsLibrary.incorrectPlay();
+        soundsLibrary.play.incorrect();
         if(Timer.getTime()<1 || wrongAnswers===maxQuestions){
             console.log(`current time is: ${Timer.getTime()}`)
             //console.log(`checkAnswer() called`);
@@ -89,7 +94,7 @@ function checkAnswer(eventObj) {
         Timer.timeoutClr();
         Timer.timeoutSet(toggleFeedback);
         //correctPlay();
-        soundsLibrary.correctPlay();
+        soundsLibrary.play.correct();
     }
     nextQuestion(eventObj);
 }
