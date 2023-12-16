@@ -14,10 +14,8 @@ const soundsLibrary = {
         incorrect : soundVar("assets/sfx/incorrect.wav")}, 
     stop : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;}),
     play : (stop = soundsLibrary.stop())=> ({
-        correct : () => {
-            soundsLibrary.sounds.correct.play();},
-        incorrect : () => {
-            soundsLibrary.sounds.incorrect.play();},
+        correct : soundsLibrary.sounds.correct.play(),
+        incorrect : soundsLibrary.sounds.incorrect.play(),
     }),
 }
 
@@ -76,7 +74,7 @@ function checkAnswer(eventObj) {
         Timer.timeoutSet(toggleFeedback);
         Timer.deductTime(penalty);
         //incorrectPlay();
-        soundsLibrary.play().incorrect();
+        soundsLibrary.play().incorrect;
         if(Timer.getTime()<1 || wrongAnswers===maxQuestions){
             console.log(`current time is: ${Timer.getTime()}`)
             //console.log(`checkAnswer() called`);
@@ -90,7 +88,7 @@ function checkAnswer(eventObj) {
         Timer.timeoutClr();
         Timer.timeoutSet(toggleFeedback);
         //correctPlay();
-        soundsLibrary.play().correct();
+        soundsLibrary.play().correct;
     }
     nextQuestion(eventObj);
 }
