@@ -7,14 +7,18 @@ const penaltyElement = htmlElement('#penalty');
 const penalty = 20//parseInt(penaltyElement.dataset.penalty);
 penaltyElement.textContent = penalty;
 
-const correct = document.createElement("audio");
-correct.setAttribute("src","assets/sfx/correct.wav");
-const incorrect = document.createElement("audio")
-incorrect.setAttribute("src","assets/sfx/incorrect.wav");
-const sounds = [correct, incorrect];
-const stopSounds = (s = sounds) => s.forEach(sound => {sound.pause(); sound.currentTime = 0;});
-function correctPlay  () {stopSounds(); correct.play();}
-function incorrectPlay () {stopSounds(); incorrect.play();}
+const correct = (src="assets/sfx/correct.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
+const incorrect = (src="assets/sfx/incorrect.wav", audio=document.createElement("audio"), s=audio.setAttribute("src", src)) => audio
+const soundsLibrary = {
+    sounds: {correct, incorrect}, 
+    stopSounds : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound().pause(); sound.currentTime = 0;}),
+    correctPlay : (s = Object.values(soundsLibrary.sounds)) => {
+        soundsLibrary.stopSounds(s); 
+        soundsLibrary.sounds.correct().play();},
+    incorrectPlay : (s = Object.values(soundsLibrary.sounds)) => {
+        soundsLibrary.stopSounds(s); 
+        soundsLibrary.sounds.incorrect().play();},
+}
 
 // Timer object 
 const Timer = {
@@ -70,7 +74,8 @@ function checkAnswer(eventObj) {
         Timer.timeoutClr();
         Timer.timeoutSet(toggleFeedback);
         Timer.deductTime(penalty);
-        incorrectPlay();
+        //incorrectPlay();
+        soundsLibrary.incorrectPlay();
         if(Timer.getTime()<1 || wrongAnswers===maxQuestions){
             console.log(`current time is: ${Timer.getTime()}`)
             //console.log(`checkAnswer() called`);
@@ -83,7 +88,8 @@ function checkAnswer(eventObj) {
         feedbackEl.classList.remove('hide');
         Timer.timeoutClr();
         Timer.timeoutSet(toggleFeedback);
-        correctPlay();
+        //correctPlay();
+        soundsLibrary.correctPlay();
     }
     nextQuestion(eventObj);
 }
