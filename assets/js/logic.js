@@ -14,15 +14,15 @@ const soundsLibrary = {
     sounds: {
         correct : soundVar("assets/sfx/correct.wav"),
         incorrect : soundVar("assets/sfx/incorrect.wav")}, 
-    stopSounds : (s = Object.values(soundsLibrary.sounds)) => s.forEach(sound => {sound().pause(); sound.currentTime = 0;}),
+    stopSounds : (s = Object.keys(soundsLibrary.sounds)) => s.forEach(sound => {sound().pause(); sound.currentTime = 0;}),
     play : {
-    correct : (s = Object.values(soundsLibrary.sounds)) => {
-        soundsLibrary.stopSounds(s); 
-        soundsLibrary.sounds.correct().play();},
-    incorrect : (s = Object.values(soundsLibrary.sounds)) => {
-        soundsLibrary.stopSounds(s); 
-        soundsLibrary.sounds.incorrect().play();},
-    }
+        correct : (s = Object.keys(soundsLibrary.sounds)) => {
+            soundsLibrary.stopSounds(s); 
+            soundsLibrary.sounds.correct().play();},
+        incorrect : (s = Object.keys(soundsLibrary.sounds)) => {
+            soundsLibrary.stopSounds(s); 
+            soundsLibrary.sounds.incorrect().play();},
+    },
 }
 
 // Timer object 
